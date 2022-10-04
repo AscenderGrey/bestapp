@@ -36,3 +36,116 @@ def sum_of_any_level_list(seq):
             return seq[0] + sum_of_any_level_list(seq[1:])
 
 print(sum_of_any_level_list([1, 2, [2, 3, "a"], [5]]))
+
+import math
+
+spelare1_pjäser = []
+spelare2_pjäser = []
+def totalpjäs():
+    totalpjäs = spelare1_pjäser + spelare2_pjäser
+    return totalpjäs
+
+
+def new_board():
+    board = (spelare1_pjäser, spelare2_pjäser)
+    return board
+board = new_board()
+
+                 
+def place_piece(board, x, y, player):
+    if "spelare1" == player:
+        spelare1_pjäser.append((x, y))
+        return (x, y) in spelare1_pjäser 
+    elif "spelare2" == player:
+        spelare2_pjäser.append((x, y))
+        return (x, y) in spelare2_pjäser
+    
+
+def is_free(board, x, y):
+    totalpjäs = spelare1_pjäser + spelare2_pjäser
+    return not((x, y) in totalpjäs)
+
+def get_piece(board, x, y):
+    if (x, y) in spelare1_pjäser:
+        print("spelare1")
+    elif (x, y) in spelare2_pjäser:
+        print("spelare2")
+    else:
+        return False
+
+def remove_piece(board, x, y):
+    totalpjäs = spelare1_pjäser + spelare2_pjäser
+    if (x, y) in totalpjäs:
+        totalpjäs.remove((x, y))
+        spelare1_pjäser.remove((x, y)) or spelare2_pjäser.remove((x, y))
+        return not((x, y) in totalpjäs) 
+    else:
+        return False
+
+
+    
+
+def move_piece(board, x, y, a, b):
+    totalpjäs = spelare1_pjäser + spelare2_pjäser
+    for i in range(len(totalpjäs)):
+        if totalpjäs[i] == (x, y):
+            return totalpjäs[i] == (a, b)
+        return True
+
+
+def count(board, x, y, player):
+    if "spelare1" ==  player:
+        if "collum" == x:
+            output = [item for item in spelare1_pjäser
+                      if item[0] == y]
+            print(len(output))
+        if "row" == x:
+            output = [item for item in spelare1_pjäser
+                      if item[1] == y]
+            print(len(output))
+    elif "spelare2" == player:
+        if "collum" == x:
+            output = [item for item in spelare2_pjäser
+                    if item[0] == y]
+            print(len(output))
+        if "row" == x:
+            output = [item for item in spelare2_pjäser
+                    if item[1] == y]
+            print(len(output))
+
+
+
+def nearest_piece(board, x, y):
+    totalpjäs = spelare1_pjäser + spelare2_pjäser
+    tomlis = []
+    for tup in totalpjäs:
+        disx = tup[0] - x
+        disy = tup[1] - y
+        dis = math.sqrt(disx**2 + disy**2)
+        tomlis.append(dis)
+    tomlis.index((min(tomlis)))
+    print(totalpjäs[(tomlis.index((min(tomlis))))])
+
+
+
+def factorial(n):
+    factorial = 1
+
+    while n > 0:
+        factorial = factorial*n
+        n = n - 1
+
+    return factorial
+
+def recursive_factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n*factorial(n - 1)
+
+def choose(x, y):
+    t = recursive_factorial(x)
+    p = recursive_factorial(y)
+    i = recursive_factorial(x - y)
+    h = t / (p*(i))
+    return h
