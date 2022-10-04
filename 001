@@ -1,1 +1,38 @@
 print('hello world')
+def sum_of_any_level_list(seq):
+    if not seq:
+        return 0
+    elif isinstance(seq[0], list):
+        return sum_of_any_level_list(seq[0]) + sum_of_any_level_list(seq[1:])
+    else:
+        return seq[0] + sum_of_any_level_list(seq[1:])
+
+print(sum_of_any_level_list([1, 2, [2, 3, 4], [5]]))
+
+medelande = ("jokerLOL_")
+def split_it():
+    first_msg = (" ")
+    second_msg = (" ")
+    for i in medelande:
+        if i.islower() or i == "_" or i == ".":
+            first_msg += i
+    for i in medelande:
+        if i.isupper() or i == " " or i == "|":
+            second_msg += i
+    else:
+        ()
+    print(f'first message: {first_msg}, second message: {second_msg}')
+
+print(split_it()
+
+def sum_of_any_level_list(seq):
+    tomlis = []
+    if not seq:
+        return 0
+    elif isinstance(seq[0], list):
+        return sum_of_any_level_list(seq[0]) + sum_of_any_level_list(seq[1:])
+    else:
+        if isinstance(seq[1:], int):
+            return seq[0] + sum_of_any_level_list(seq[1:])
+
+print(sum_of_any_level_list([1, 2, [2, 3, "a"], [5]]))
