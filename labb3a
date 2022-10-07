@@ -1,0 +1,55 @@
+import math
+def new_board():
+    board = {}
+    return board
+
+board = new_board()
+
+
+def place_piece(board, x, y, player):
+   if not (x, y) in board:
+           if "spelare1" == player:
+               board[(x, y)] == "spelare1" 
+           elif "spelare2" == player:
+               board[(x, y)] == "spelare2"
+   else:
+       return False
+def is_free(board, x, y):
+     return not(x, y) in board
+
+
+def get_piece(board, x, y):
+    if (x, y) in board:
+       return  board[(x, y)]
+    else:
+        return False
+
+
+def remove_piece(board, x, y):
+    return board.pop(x, y)
+
+def move_piece(board, x, y, a, b):
+    if (a, b) in board:
+        return False
+    else:
+        board[(a, b)] = board[(x, y)]
+        del board[(x, y)]
+
+def count(board, x, y, player):
+    if y == "collum":
+        
+    elif y == "row":
+    
+
+def nearest_piece(board, x, y):
+
+
+board = new_board()
+print(place_piece(board, 100, 500, "spelare1"))
+print(board)
+
+
+
+
+
+              
