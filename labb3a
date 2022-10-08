@@ -1,52 +1,81 @@
 import math
-def new_board():
+
+
+def new_board(): # skapar ny tom dictionary
     board = {}
     return board
+
 
 board = new_board()
 
 
-def place_piece(board, x, y, player):
-   if not (x, y) in board:
-           if "spelare1" == player:
-               board[(x, y)] == "spelare1" 
-           elif "spelare2" == player:
-               board[(x, y)] == "spelare2"
-   else:
-       return False
-def is_free(board, x, y):
-     return not(x, y) in board
-
-
-def get_piece(board, x, y):
-    if (x, y) in board:
-       return  board[(x, y)]
+def place_piece(board, x, y, player): #kollar om nycken är ledig, sedan lägger till nyckeln(x, y) och värdet(player)
+    if not (x, y) in board:
+        if "spelare1" == player:
+            board[(x, y)] = 'spelare1'
+        elif "spelare2" == player:
+            board[(x, y)] = 'spelare2'
     else:
         return False
 
 
-def remove_piece(board, x, y):
-    return board.pop(x, y)
+def is_free(board, x, y): #ser om nyckeln finns i board
+    return not (x, y) in board
 
-def move_piece(board, x, y, a, b):
+
+def get_piece(board, x, y): #funktion som tar värdet av nyckeln man skriver in
+    if (x, y) in board:
+        return board[(x, y)]
+    else:
+        return False
+
+
+def remove_piece(board, x, y): #tar bort nyckeln
+    board.pop((x, y))
+
+
+def move_piece(board, x, y, a, b): #kollar först om destinatination är ledig, sen ändrar den nyckeln
     if (a, b) in board:
         return False
     else:
         board[(a, b)] = board[(x, y)]
         del board[(x, y)]
 
-def count(board, x, y, player):
-    if y == "collum":
-        
-    elif y == "row":
-    
+
+def count(board, x, y, player): #räknar alla pjäser av spelaren som är på viss rad
+    if "spelare1" == player:
+        if "collum" == x:
+            output = [item for item in board.keys() #tar alla tupler med första argumentet == y i spelaren1
+                      if item[0] == y]
+            print(len(output)) #printar ut hur många tuplar den tog
+        if "row" == x:
+            output = [item for item in board.keys()
+                      if item[1] == y]
+            print(len(output))
+    elif "spelare2" == player:
+        if "collum" == x:
+            output = [item for item in board.keys()
+                      if item[0] == y]
+            print(len(output))
+        if "row" == x:
+            output = [item for item in board.keys()
+                      if item[1] == y]
+            print(len(output))
+
+
+
+
 
 def nearest_piece(board, x, y):
+    tomlis = [] #skapar tom lista
+    for tup in board.keys(): #loop som tar första argumentet i tuplen minus x och andra minus y
+        disx = tup[0] - x
+        disy = tup[1] - y
+        dis = math.sqrt(disx ** 2 + disy ** 2) #använder pytagoras sats för att kolla allas avstånd
+        tomlis.append(dis)
+    tomlis.index((min(tomlis))) #index för minsta avståndet
+    print(list(board.keys())[tomlis.index((min(tomlis)))]) #kollar vilken nyckeln i board som har det indexet
 
-
-board = new_board()
-print(place_piece(board, 100, 500, "spelare1"))
-print(board)
 
 
 
