@@ -163,3 +163,21 @@ def choose(x, y):
     i = recursive_factorial(x - y)
     h = t / (p*(i))
     return h
+    
+    
+    def alb(x, first_set, sec_set):
+    if len(x) > 0:
+        if x[0].islower() or x[0] == '_' or x[0] == '.':
+            first_set += (x[0])
+            alb(x[1:len(x)], first_set, sec_set)
+        elif x[0].isupper or x[0] == ' ' or x[0] == "|":
+            sec_set += (x[0])
+            alb(x[1:len(x)], first_set, sec_set)
+        else:
+            alb(x[1:len(x)], first_set, sec_set)
+    else:
+        print(first_set,  sec_set)
+
+
+
+alb('AeskdBmssak.Calsj_', '', '')
