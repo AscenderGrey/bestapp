@@ -1,0 +1,43 @@
+def split_rec(msg):
+    first_msg = (" ")
+    second_msg = (" ")
+    if not msg:
+        return False
+    elif msg[0].islower() or msg[0] == "_" or msg[0] == ".":
+        first_msg += msg[0]
+    elif msg[0].isupper() or msg[0] == " " or msg[0] == "|":
+        second_msg += msg[0]
+    else:
+        return split_rec(msg[1:])
+    print(f'first message: {first_msg}, second message: {second_msg}')
+
+
+
+def split_it(medelande):
+    first_msg = (" ")
+    second_msg = (" ")
+    for i in medelande:
+        if i.islower() or i == "_" or i == ".":
+            first_msg += i
+    for i in medelande:
+        if i.isupper() or i == " " or i == "|":
+            second_msg += i
+    else:
+        ()
+    print(f'first message: {first_msg}, second message: {second_msg}')
+
+split_it("hTEeSj_CO")
+def split_rec(medelande):
+    first_msg = (" ")
+    second_msg = (" ")
+    i = len(medelande)
+    if not medelande:
+        return 0
+    elif medelande[i].islower() or medelande[i] == "_" or medelande[i] == ".":
+        first_msg += medelande[i]
+        return (split_rec(i - 1))
+    elif medelande[i].isupper() or medelande[i] == " " or medelande[i] == "|":
+        second_msg += medelande[i]
+        return (split_rec(i - 1))
+    else:
+        return(split_rec(i))
