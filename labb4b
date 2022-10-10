@@ -13,18 +13,42 @@ def is_leaf(tree):
 def create_tree(left_tree, key, right_tree):
     return [left_tree, key, right_tree]
 
-	
+
 def left_subtree(tree):
     return tree[0]
 
 
 def right_subtree(tree):
     return tree[2]
+
+
 def key(tree):
     return tree[1]
+
+
 def is_treelike(tree):
     for i in tree:
         if i == right_subtree(tree) or i == is_leaf(tree) or i == is_empty_tree(tree):
             return True
     else:
         return False
+
+def exists_in_tree(x, tree):
+    if x == key(tree) or x in right_subtree(tree) or x in left_subtree(tree):
+        return True
+    else:
+        return False
+
+print(exists_in_tree(666, [[1, 3,[]], 5, [6, 7, 8] ]))
+
+def our_tree():
+    tree = []
+    return tree
+
+def insert(x, tree):
+    if not tree:
+        x == key(tree)
+    elif x > key(tree):
+        x == right_subtree(tree):
+    elif x < left_subtree(tree):
+        x == 
