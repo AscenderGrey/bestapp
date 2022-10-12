@@ -13,8 +13,11 @@ def place_piece(board, x, y, player): #kollar om nycken är ledig, sedan lägger
     if not (x, y) in board:
         if "spelare1" == player:
             board[(x, y)] = 'spelare1'
+            return (x, y) in board
         elif "spelare2" == player:
             board[(x, y)] = 'spelare2'
+            return (x, y) in board
+            
     else:
         return False
 
@@ -31,7 +34,11 @@ def get_piece(board, x, y): #funktion som tar värdet av nyckeln man skriver in
 
 
 def remove_piece(board, x, y): #tar bort nyckeln
-    board.pop((x, y))
+    if (x, y) not in board:
+        return (x, y) in board
+    if (x, y) in board:
+        board.pop((x, y))
+        return not (x, y) in board
 
 
 def move_piece(board, x, y, a, b): #kollar först om destinatination är ledig, sen ändrar den nyckeln
@@ -40,27 +47,30 @@ def move_piece(board, x, y, a, b): #kollar först om destinatination är ledig, 
     else:
         board[(a, b)] = board[(x, y)]
         del board[(x, y)]
+        return (a, b) in board
 
 
 def count(board, x, y, player): #räknar alla pjäser av spelaren som är på viss rad
     if "spelare1" == player:
-        if "collum" == x:
+        if "column" == x:
             output = [item for item in board.keys() #tar alla tupler med första argumentet == y i spelaren1
                       if item[0] == y]
-            print(len(output)) #printar ut hur många tuplar den tog
+            return (len(output))  #returnar hur många tuplar den tog
         if "row" == x:
-            output = [item for item in board.keys()
+            output =[item for item in board.keys()
                       if item[1] == y]
-            print(len(output))
+            return (len(output))
     elif "spelare2" == player:
-        if "collum" == x:
-            output = [item for item in board.keys()
-                      if item[0] == y]
-            print(len(output))
+        if "column" == x:
+            output = ([item for item in board.keys()
+                      if item[0] == y])
+            return len(output)
         if "row" == x:
             output = [item for item in board.keys()
                       if item[1] == y]
-            print(len(output))
+            return len(output)
+    else:
+        return 0
 
 
 
@@ -73,12 +83,13 @@ def nearest_piece(board, x, y):
         disy = tup[1] - y
         dis = math.sqrt(disx ** 2 + disy ** 2) #använder pytagoras sats för att kolla allas avstånd
         tomlis.append(dis)
-    tomlis.index((min(tomlis))) #index för minsta avståndet
-    print(list(board.keys())[tomlis.index((min(tomlis)))]) #kollar vilken nyckeln i board som har det indexet
+    for i in tomlis:
+        global minst
+        minst = tomlis[0]
+        if i < minst:
+                    minst = i
+    
+    
+    return (list(board.keys())[tomlis.index(minst)]) #kollar vilken nyckeln i board som har det indexet
 
 
-
-
-
-
-              
