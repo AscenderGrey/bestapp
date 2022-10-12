@@ -1,0 +1,24 @@
+def factor(k):
+    if k == 0:
+        return 1
+    else:
+        return k * factor(k - 1)
+
+def factor_divided_by(n, k):
+    if n == k:
+        return 1
+    else:
+        return n * factor_divided_by(n - 1, k)
+print(factor_divided_by(10, 7))
+
+
+def choose(n,k):
+    n = int(n)
+    k = int(k)
+    if k == (n -1):
+        return n
+    if k == 1:
+        return n
+    if k > (n - k): # take advantage of symmetry
+            k = n - k
+    return(int(factor_divided_by(n, (n - k))//(factor(k))))
