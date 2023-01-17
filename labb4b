@@ -1,26 +1,68 @@
-
-def interpret(x, dict):
-    if x[1] == "AND":
-        dict[x[0]] == "true" and dict[x[1]] == "true"
- 
-    elif x[1] == "OR":
-        (dict[x[0]] == "false" and dict[x[1]] == "true") or (dict[x[0]] == "true" and dict[x[1]] == "false")
-    for i in x:
-        if type(x[i]) = list:
-            if x[i][0] == "NOT":
-                if dict[x[i]] == "true":
-                    dict[x[i]] == "false"
-                if dict[x[i]] == "false":
-                    dict[x[i]] == "true":
-    if not dict:
-        if x[1] == "And":
-            x[0] == "true" and x[2] == "true"
-            elif (x[0] == "false" and x[2] == "true") or (x[0] == "true" and x[2] == "false") or (x[0] == "true" and x[2] == "true"))
-    if x[2] not in dict:
-        
+def interpret(uttryck, tolkning):
+    return tolk(uttryck, tolkning)
 
 
-print(interpret(["door_open", "AND", "cat_gone"], 
-               {"door_open" : "false", "cat_gone" : "true", "cat_asleep" : "true"}))
+def tolk(uttryck, tolkning):
+    if isinstance(uttryck, str):
+        if uttryck in tolkning:
+            uttryck = tolkning[uttryck]
 
+    for expression in uttryck:
+        if isinstance(expression, list):
+
+            #print("test_list")
+            index = uttryck.index(expression)
+            uttryck.remove(expression)
+            ny_uttryck = tolk(expression, tolkning)
+            uttryck.insert(index, ny_uttryck)
+
+            #print(ny_uttryck)
+            return tolk(uttryck, tolkning)
+        if expression in tolkning:
+            uttryck[uttryck.index(expression)] = tolkning[expression]
+
+    return bol_func(uttryck)
+
+
+def bol_func(uttryck):
+    if isinstance(uttryck, str):
+        return uttryck
+    for expression in uttryck:
+        #print(expression)
+        if expression == "NOT":
+            if uttryck[uttryck.index(expression) + 1] == "false":
+                uttryck.pop(uttryck.index(expression) + 1)
+                uttryck[uttryck.index(expression)] = "true"
+                return bol_func(uttryck)
+            if uttryck[uttryck.index(expression) + 1] == "true":
+                uttryck.pop(uttryck.index(expression) + 1)
+                uttryck[uttryck.index(expression)] = "false"
+
+                return bol_func(uttryck)
+    if len(uttryck) == 1:
+        if uttryck[0] == 'false':
+            return 'false'
+        if uttryck[0] == 'true':
+            return 'true'
+    if len(uttryck) == 3:
+        if uttryck[1] == "OR":
+            if uttryck[0] == "true" or uttryck[2] == "true":
+                return 'true'
+            else:
+                return 'false'
+        if uttryck[1] == "AND":
+            if uttryck[0] == "true" and uttryck[2] == "true":
+                return 'true'
+            else:
+                return 'false'
+
+
+print(interpret(["door_open", "AND", "cat_gone"], {"door_open": "false", "cat_gone": "true", "cat_asleep": "true"}))
+
+print(interpret(["cat_asleep", "OR", ["true"]], {"door_open": "false", "cat_gone": "true", "cat_asleep": "true"}))
+print(interpret(["true", "OR", "true"], {}))
+print(interpret("cat_gone", {"door_open": "false", "cat_gone": "true"}))
+print(interpret(["NOT", ["NOT", ["NOT", ["cat_asleep", "OR", ["NOT", "cat_asleep"]]]]],{"cat_asleep": "false"}))
+print(interpret(["NOT", "AND", "true"], {"NOT":"true"}))
+print(interpret(["NOT", "AND"], {"AND": "false"}))
 
