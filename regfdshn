@@ -1,0 +1,178 @@
+package se.liu.liuid123.CityBuilder;
+
+import javax.swing.*;
+import	java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+
+
+public class GamePanel extends JPanel implements ActionListener, MouseListener
+{
+
+    int TILE_SIZE = 40;
+    public static final int SCREEN_WIDTH = 400;
+    public static final int SCREEN_HEIGHT = 400;
+    private Map map;
+    private int selectedX = -1;
+    private int selectedY = -1;
+
+    public GamePanel(){
+	this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+	this.setBackground(Color.black);
+	this.addMouseListener(this);
+    }
+    public void actionPerformed(ActionEvent e){
+
+    }
+
+    public void updateTile(int x, int y, Tile.Type newType) {
+	Tile tile = map.getTile(x, y);
+	tile.setType(newType);
+	//g.setColor(Color.GREEN);
+	//g.fillRect(TILE_SIZE*x,TILE_SIZE*y,TILE_SIZE-5,TILE_SIZE-5);
+	this.revalidate();
+	this.repaint();
+
+    }
+
+    public void paintComponent(Graphics g){
+	super.paintComponent(g);
+	Map map = new Map(SCREEN_WIDTH/TILE_SIZE, SCREEN_HEIGHT/TILE_SIZE);
+	Image grassImage = new ImageIcon(getClass().getResource("/images/grass.png")).getImage();
+	Image policeImage = new ImageIcon(getClass().getResource("/images/policestation.png")).getImage();
+	Image buildingImage = new ImageIcon(getClass().getResource("/images/building.png")).getImage();
+	for (int x = 0; x < SCREEN_WIDTH/TILE_SIZE; x++) {
+	    for (int y = 0; y < SCREEN_HEIGHT/TILE_SIZE; y++) {
+		Tile tile = map.getTile(x,y);
+		if(tile.getType() == Tile.Type.EMPTY){
+			//g.setColor(Color.GREEN);
+			//g.fillRect(TILE_SIZE*x,TILE_SIZE*y,TILE_SIZE-5,TILE_SIZE-5);
+		    g.drawImage(grassImage, TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE-5, TILE_SIZE-5, this);
+
+
+		} if (tile.getType() == Tile.Type.BUILDING) {
+			//g.setColor(Color.orange);
+			//g.fillRect(TILE_SIZE*x,TILE_SIZE*y,TILE_SIZE-5,TILE_SIZE-5);
+		    	g.drawImage(buildingImage, TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE-5, TILE_SIZE-5, this);
+
+
+		}
+		if(tile.getType() == Tile.Type.POLICESTATION){
+		    //g.setColor(Color.blue);
+		    //g.fillRect(TILE_SIZE*x,TILE_SIZE*y,TILE_SIZE-5,TILE_SIZE-5);
+		    g.drawImage(policeImage, TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE-5, TILE_SIZE-5, this);
+		}
+
+	    }
+	}
+
+
+
+    }
+
+
+    public void mouseClicked(MouseEvent e, Graphics g) {
+
+	// get the x and y coordinates of the click
+	int x = e.getX() / TILE_SIZE;
+	int y = e.getY() / TILE_SIZE;
+
+	// set the selected tile coordinates
+	selectedX = x;
+	selectedY = y;
+	Tile tile = map.getTile(x, y);
+	JButton buildingButton = new JButton("Building");
+	JButton factoryButton = new JButton("Factory");
+	JButton policeButton = new JButton("Police Station");
+	Image grassImage = new ImageIcon(getClass().getResource("/images/grass.png")).getImage();
+	Image policeImage = new ImageIcon(getClass().getResource("/images/policestation.png")).getImage();
+	Image buildingImage = new ImageIcon(getClass().getResource("/images/building.png")).getImage();
+
+	ActionListener buttonListener = new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == buildingButton) {
+		    // Code to execute when buildingButton is clicked
+		    updateTile(selectedX, selectedY, Tile.Type.BUILDING);
+		    System.out.println(tile.getType());
+		    //g.drawImage(buildingImage, TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE-5, TILE_SIZE-5, this);
+
+
+		} else if (e.getSource() == policeButton) {
+		    updateTile(selectedX, selectedY, Tile.Type.POLICESTATION);
+		    System.out.println(tile.getType());
+
+		} else if (e.getSource() == factoryButton) {
+		    updateTile(selectedX, selectedY, Tile.Type.FACTORY);
+		    System.out.println(tile.getType());
+		    // Code to execute when otherButton is clicked
+		    // ...
+
+		    // Add more else if blocks for each button as needed
+		}
+	    }
+	};
+
+// Add the buttonListener to each JButton
+	buildingButton.addActionListener(buttonListener);
+	policeButton.addActionListener(buttonListener);
+	factoryButton.addActionListener(buttonListener);
+	if (tile.getType() == Tile.Type.EMPTY) {
+	    JFrame frame = new JFrame();
+	    JPanel panel = new JPanel();
+	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	    JLabel label = new JLabel("What building?");
+	    panel.add(label);
+
+
+	    panel.add(buildingButton);
+	    panel.add(factoryButton);
+	    panel.add(policeButton);
+	    frame.add(panel);
+	    frame.pack();
+	    frame.setLocationRelativeTo(this);
+	    frame.setVisible(true);
+
+	}
+
+
+
+
+	else {
+	    tile.setType(Tile.Type.ROAD);
+	    this.getGraphics().setColor(Color.RED);
+	    this.getGraphics().fillRect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE - 5, TILE_SIZE - 5);
+	    this.repaint();
+	}
+
+	// repaint the panel to update the color of the selected tile
+
+
+    }
+
+    @Override public void mouseClicked(final MouseEvent mouseEvent) {
+
+    }
+
+    @Override public void mousePressed(final MouseEvent mouseEvent) {
+
+    }
+
+    @Override public void mouseReleased(final MouseEvent mouseEvent) {
+
+    }
+
+    @Override public void mouseEntered(final MouseEvent mouseEvent) {
+
+    }
+
+    @Override public void mouseExited(final MouseEvent mouseEvent) {
+
+    }
+}
